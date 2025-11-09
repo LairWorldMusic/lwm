@@ -1,0 +1,39 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Electron Main",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/electron",
+      "args": ["--remote-debugging-port=9223"],
+      "restart": true,
+      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
+      "console": "integratedTerminal",
+      "env": {
+        "NODE_ENV": "development"
+      }
+    },
+    {
+      "name": "Electron Renderer",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9223,
+      "pathMapping": {
+        "/": "${workspaceFolder}/",
+        "/app": "${workspaceFolder}/dist/renderer/"
+      },
+      "sourceMapPathOverrides": {
+        "webpack:///./~/*": "${workspaceFolder}/node_modules/*",
+        "webpack:///?:*": "${workspaceFolder}/*"
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "Electron",
+      "configurations": ["Electron Main", "Electron Renderer"],
+      "stopAll": true
+    }
+  ]
+}
