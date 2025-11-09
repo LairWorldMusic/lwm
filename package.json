@@ -1,0 +1,79 @@
+{
+  "name": "voicemod-vst3",
+  "version": "0.1.0",
+  "description": "Electron application for VST3 audio processing",
+  "main": "dist/main/index.js",
+  "homepage": "./",
+  "author": "Lair World Music <contact@lairworldmusic.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "npm run build && electron-dev",
+    "dev": "concurrently \"npm run dev:main\" \"npm run dev:renderer\"",
+    "dev:main": "webpack --config webpack.main.config.js --watch",
+    "dev:renderer": "webpack serve --config webpack.renderer.config.js",
+    "build": "npm run build:main && npm run build:renderer",
+    "build:main": "webpack --config webpack.main.config.js --mode production",
+    "build:renderer": "webpack --config webpack.renderer.config.js --mode production",
+    "dist": "npm run build && electron-builder",
+    "dist:dev": "npm run build && electron-builder --dir",
+    "electron-dev": "concurrently \"npm run dev:main\" \"wait-on http://localhost:8080 && electron .\"",
+    "electron": "electron .",
+    "pack": "electron-builder --dir"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "node-addon-api": "^7.0.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.23.0",
+    "@babel/preset-env": "^7.23.0",
+    "@babel/preset-react": "^7.22.0",
+    "babel-loader": "^9.1.0",
+    "concurrently": "^8.2.0",
+    "css-loader": "^6.8.0",
+    "electron": "^27.0.0",
+    "electron-builder": "^24.6.0",
+    "electron-devtools-installer": "^3.2.0",
+    "file-loader": "^6.2.0",
+    "html-webpack-plugin": "^5.6.0",
+    "node-gyp": "^9.4.0",
+    "style-loader": "^3.3.0",
+    "wait-on": "^7.0.0",
+    "webpack": "^5.89.0",
+    "webpack-cli": "^5.1.0",
+    "webpack-dev-server": "^4.15.0"
+  },
+  "build": {
+    "appId": "com.voicemod.vst3",
+    "productName": "Voicemod VST3",
+    "directories": {
+      "buildResources": "public",
+      "output": "release"
+    },
+    "files": [
+      "dist/main/**/*",
+      "dist/renderer/**/*",
+      "public/**/*",
+      "node_modules/**/*"
+    ],
+    "win": {
+      "target": [
+        "nsis",
+        "portable"
+      ]
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb"
+      ]
+    },
+    "mac": {
+      "target": [
+        "dmg",
+        "zip"
+      ]
+    }
+  }
+}
