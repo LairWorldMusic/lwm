@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VST3 Audio Processor</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #ffffff;
+            overflow: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            height: calc(100vh - 40px);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #00ffcc;
+        }
+        
+        .main-content {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 20px;
+            overflow: hidden;
+        }
+        
+        .sidebar {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        
+        .workspace {
+            background: #2a2a2a;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .button {
+            background: #00ffcc;
+            color: #1a1a1a;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            margin: 5px;
+            transition: all 0.2s;
+        }
+        
+        .button:hover {
+            background: #00ccaa;
+            transform: translateY(-1px);
+        }
+        
+        .button:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        .status {
+            background: #333;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+        }
+        
+        .status.success {
+            border-left: 4px solid #00ff88;
+        }
+        
+        .status.error {
+            border-left: 4px solid #ff4444;
+        }
+        
+        .status.info {
+            border-left: 4px solid #00aaff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>VST3 Audio Processor</h1>
+        </div>
+        
+        <div class="main-content">
+            <div class="sidebar">
+                <h3>Audio Engine</h3>
+                <button id="initAudio" class="button">Initialize Audio</button>
+                <button id="testAudio" class="button" disabled>Test Audio</button>
+                
+                <div id="status" class="status info">Ready to initialize audio engine...</div>
+            </div>
+            
+            <div class="workspace">
+                <div id="workspaceContent">
+                    <h2>Welcome to VST3 Audio Processor</h2>
+                    <p>Initialize the audio engine to get started.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="bundle.js"></script>
+</body>
+</html>
