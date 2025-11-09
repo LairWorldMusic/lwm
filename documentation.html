@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#0b0b0c"/>
+  <meta name="description" content="Документация Lair World Music"/>
+  <title>Lair World Music — Документация</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/img/lwm.png"/>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/lwm.png"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=35"/>
+  <style>
+    .documentation-container {
+      padding: 40px 0;
+    }
+    .documentation-loading {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .documentation-loading i {
+      font-size: 48px;
+      animation: spin 1s linear infinite;
+      display: block;
+      margin-bottom: 16px;
+    }
+    .documentation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      margin-top: 32px;
+    }
+    .documentation-page {
+      background: linear-gradient(180deg, var(--bg-soft), var(--bg-elev));
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      box-shadow: var(--shadow);
+      transition: transform .25s, box-shadow .25s, border-color .25s, opacity 0.5s ease, transform 0.5s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .documentation-page.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .documentation-page:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 44px rgba(0,0,0,.10);
+      border-color: rgba(0,0,0,.18);
+    }
+    .documentation-page.is-visible:hover {
+      transform: translateY(-4px);
+    }
+    .documentation-page canvas {
+      width: 100%;
+      height: auto;
+      display: block;
+      border-radius: 8px;
+      background: white;
+      box-shadow: 0 4px 12px rgba(0,0,0,.08);
+      pointer-events: none;
+    }
+    .documentation-page-number {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: rgba(0,0,0,.7);
+      color: white;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+    }
+    .documentation-actions {
+      display: flex;
+      gap: 12px;
+      margin-top: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .documentation-error {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+    }
+    .documentation-error i {
+      font-size: 64px;
+      margin-bottom: 16px;
+      display: block;
+      color: var(--accent);
+    }
+    /* Модальное окно для полноэкранного просмотра */
+    .documentation-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0);
+      z-index: 10000;
+      overflow: auto;
+      opacity: 0;
+      transition: opacity 0.3s ease, background 0.3s ease;
+      pointer-events: none;
+    }
+    .documentation-modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      background: rgba(0, 0, 0, 0.95);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .documentation-modal-content {
+      position: relative;
+      max-width: 95%;
+      max-height: 95vh;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transform: scale(0.8);
+      opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+    }
+    .documentation-modal.active .documentation-modal-content {
+      transform: scale(1);
+      opacity: 1;
+    }
+    .documentation-modal-content canvas {
+      max-width: 100%;
+      max-height: 95vh;
+      border-radius: 8px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.5);
+      background: white;
+      animation: slideInUp 0.5s ease-out;
+    }
+    .documentation-modal-close,
+    .documentation-modal-nav,
+    .documentation-modal-info {
+      opacity: 0;
+      transition: opacity 0.3s ease 0.2s;
+    }
+    .documentation-modal.active .documentation-modal-close,
+    .documentation-modal.active .documentation-modal-nav,
+    .documentation-modal.active .documentation-modal-info {
+      opacity: 1;
+    }
+    .documentation-modal-close {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10001;
+      backdrop-filter: blur(10px);
+    }
+    .documentation-modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: rotate(90deg);
+    }
+    .documentation-modal-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      color: white;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 10001;
+      backdrop-filter: blur(10px);
+    }
+    .documentation-modal-nav:hover {
+      background: rgba(255, 255, 255, 0.2);
+      transform: translateY(-50%) scale(1.1);
+    }
+    .documentation-modal-nav.prev {
+      left: 20px;
+    }
+    .documentation-modal-nav.next {
+      right: 20px;
+    }
+    .documentation-modal-nav.disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .documentation-modal-nav.disabled:hover {
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.1);
+    }
+    .documentation-modal-info {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 24px;
+      font-size: 14px;
+      font-weight: 600;
+      z-index: 10001;
+      backdrop-filter: blur(10px);
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes slideInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Стили для белой темы - модальное окно */
+    [data-theme="light"] #imageModal {
+      background: rgba(255, 255, 255, 0.95) !important;
+    }
+    [data-theme="light"] #closeModal {
+      background: rgba(0, 0, 0, 0.1) !important;
+      border: 1px solid rgba(0, 0, 0, 0.2) !important;
+      color: #0f1115 !important;
+    }
+    [data-theme="light"] #closeModal:hover {
+      background: rgba(0, 0, 0, 0.2) !important;
+    }
+    @media (max-width: 720px) {
+      .documentation-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+      .documentation-modal-nav {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+      }
+      .documentation-modal-nav.prev {
+        left: 10px;
+      }
+      .documentation-modal-nav.next {
+        right: 10px;
+      }
+      .documentation-modal-close {
+        width: 40px;
+        height: 40px;
+        font-size: 20px;
+        top: 10px;
+        right: 10px;
+      }
+      /* Адаптация для мобильных устройств */
+      #documentationContainer {
+        flex-direction: column !important;
+        gap: 24px !important;
+        align-items: stretch !important;
+      }
+      .documentation-image {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+      }
+      #docImage {
+        max-width: 100% !important;
+        width: 100% !important;
+        height: auto !important;
+      }
+      .documentation-text {
+        flex: 1 1 auto !important;
+        min-width: 0 !important;
+        width: 100% !important;
+      }
+      .documentation-text h2 {
+        font-size: clamp(20px, 5vw, 28px) !important;
+        margin-bottom: 16px !important;
+      }
+      .documentation-text p {
+        font-size: 14px !important;
+        line-height: 1.5 !important;
+        margin-bottom: 12px !important;
+      }
+      .documentation-text .muted {
+        font-size: 14px !important;
+      }
+      /* Стили для белой темы на мобильных устройствах - модальное окно */
+      [data-theme="light"] #imageModal {
+        background: rgba(255, 255, 255, 0.95) !important;
+      }
+      [data-theme="light"] #closeModal {
+        background: rgba(0, 0, 0, 0.1) !important;
+        border: 1px solid rgba(0, 0, 0, 0.2) !important;
+        color: #0f1115 !important;
+      }
+      [data-theme="light"] #closeModal:hover {
+        background: rgba(0, 0, 0, 0.2) !important;
+      }
+    }
+  </style>
+</head>
+<body class="is-loading">
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="logo" data-transition>Lair<span>World</span>Music</a>
+      <nav class="nav" id="site-nav">
+        <a href="index.html" class="nav-link" data-transition>Главная</a>
+        <a href="about.html" class="nav-link" data-transition>О нас</a>
+        <a href="news.html" class="nav-link" data-transition>Новости</a>
+        <a href="documentation.html" class="nav-link active" data-transition>Документация</a>
+        <a href="contact.html" class="nav-link" data-transition>Контакты</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+          <img src="assets/img/lwm.png" alt="Theme toggle" width="28" height="28">
+        </button>
+        <button class="burger" id="burger" aria-label="Меню" aria-controls="site-nav" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="reveal">Документация</h1>
+        <p class="muted reveal">Официальная документация Lair World Music</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div id="documentationContainer" style="display: flex; gap: 40px; align-items: flex-start; flex-wrap: wrap;">
+          <div class="documentation-image reveal" style="flex: 0 1 auto; width: 100%; max-width: 600px;">
+            <img id="docImage" src="assets/img/docs/1540.png" alt="Документация Lair World Music" style="max-width: 100%; width: 100%; height: auto; border-radius: var(--radius); box-shadow: var(--shadow); cursor: pointer; transition: transform 0.3s ease; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated; image-rendering: auto;">
+          </div>
+          <div class="documentation-text reveal" style="flex: 1 1 300px; min-width: 0;">
+            <h2 style="margin-bottom: 20px;">Меморандум о партнёрстве</h2>
+            <p class="muted" style="margin-bottom: 16px; line-height: 1.6;">
+              <strong>Стороны:</strong> Музыкальное объединение Lair World Music (куратор ONLY1DNKK, «LWM») и музыкальное объединение MP3 GANG (Seimant, «MP3»).
+            </p>
+            <p class="muted" style="margin-bottom: 16px; line-height: 1.6;">
+              <strong>Цель:</strong> Установление творческого партнёрства в области музыкального производства, промо, организации мероприятий и развития совместных проектов.
+            </p>
+            <p class="muted" style="margin-bottom: 12px; line-height: 1.6; font-weight: 600;">
+              Обязательства:
+            </p>
+            <p class="muted" style="margin-bottom: 8px; line-height: 1.6;">
+              <strong>LWM:</strong> предоставление платформы для совместных релизов, медиаподдержка, участие в совместных проектах.
+            </p>
+            <p class="muted" style="margin-bottom: 16px; line-height: 1.6;">
+              <strong>MP3:</strong> участие в коллаборациях, содействие в продвижении проектов, предоставление творческих ресурсов.
+            </p>
+            <p class="muted" style="margin-bottom: 16px; line-height: 1.6;">
+              <strong>Срок действия:</strong> бессрочно, с возможностью прекращения по уведомлению за 14 дней.
+            </p>
+            <p class="muted" style="line-height: 1.6;">
+              Меморандум не является юридическим договором. Стороны сохраняют самостоятельность. Документ может быть опубликован на официальных площадках обеих сторон.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Созданы, чтобы вдохновлять и объединять</p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/lxirmusic/" target="_blank" rel="noopener"><i class="ri-instagram-line"></i></a>
+        <a href="https://www.youtube.com/@lairworldmusic" target="_blank" rel="noopener"><i class="ri-youtube-line"></i></a>
+        <a href="https://t.me/lair_music" target="_blank" rel="noopener"><i class="ri-telegram-line"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Модальное окно для полноэкранного просмотра -->
+  <div id="imageModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); z-index: 10000; cursor: pointer; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s ease;">
+    <img id="modalImage" src="" alt="Документация" style="width: 100%; height: 100%; object-fit: contain; image-rendering: -webkit-optimize-contrast; image-rendering: crisp-edges; image-rendering: pixelated; image-rendering: auto;">
+    <button id="closeModal" style="position: fixed; top: 20px; right: 20px; width: 48px; height: 48px; background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 50%; color: white; font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10001; backdrop-filter: blur(10px); transition: all 0.3s ease;" aria-label="Закрыть">
+      <i class="ri-close-line"></i>
+    </button>
+  </div>
+
+  <script src="assets/js/main.js?v=33"></script>
+  <script src="assets/js/particles.js"></script>
+  <script>
+    // Полноэкранный просмотр изображения
+    const docImage = document.getElementById('docImage');
+    const imageModal = document.getElementById('imageModal');
+    const modalImage = document.getElementById('modalImage');
+    const closeModal = document.getElementById('closeModal');
+
+    // Открытие модального окна
+    docImage.addEventListener('click', function() {
+      modalImage.src = docImage.src;
+      imageModal.style.display = 'flex';
+      setTimeout(() => {
+        imageModal.style.opacity = '1';
+      }, 10);
+      document.body.style.overflow = 'hidden';
+    });
+
+    // Закрытие модального окна
+    function closeImageModal() {
+      imageModal.style.opacity = '0';
+      setTimeout(() => {
+        imageModal.style.display = 'none';
+        document.body.style.overflow = '';
+      }, 300);
+    }
+
+    closeModal.addEventListener('click', function(e) {
+      e.stopPropagation();
+      closeImageModal();
+    });
+
+    imageModal.addEventListener('click', function(e) {
+      // Закрываем при клике в любом месте модального окна, кроме кнопки закрытия
+      if (e.target !== closeModal && !closeModal.contains(e.target)) {
+        closeImageModal();
+      }
+    });
+    
+    // Также закрываем при клике на само изображение
+    modalImage.addEventListener('click', function(e) {
+      e.stopPropagation();
+      closeImageModal();
+    });
+
+    // Закрытие по ESC
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && imageModal.style.display === 'flex') {
+        closeImageModal();
+      }
+    });
+
+    // Эффект hover на изображении
+    docImage.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.02)';
+    });
+    docImage.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  </script>
+</body>
+</html>

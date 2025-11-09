@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="theme-color" content="#0b0b0c"/>
+  <meta name="description" content="Свяжитесь с нами — Lair World Music"/>
+  <title>Lair World Music — Контакты</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/img/lwm.png"/>
+  <link rel="shortcut icon" type="image/x-icon" href="assets/img/lwm.png"/>
+  <link rel="stylesheet" href="assets/css/styles.css?v=35"/>
+</head>
+<body class="is-loading">
+  <div class="page-transition" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <div class="container nav-wrap">
+      <a href="index.html" class="logo" data-transition>Lair<span>World</span>Music</a>
+      <nav class="nav" id="site-nav">
+        <a href="index.html" class="nav-link" data-transition>Главная</a>
+        <a href="about.html" class="nav-link" data-transition>О нас</a>
+        <a href="news.html" class="nav-link" data-transition>Новости</a>
+        <a href="documentation.html" class="nav-link" data-transition>Документация</a>
+        <a href="contact.html" class="nav-link active" data-transition>Контакты</a>
+      </nav>
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <button class="theme-toggle" id="themeToggle" aria-label="Переключить тему">
+          <img src="assets/img/lwm.png" alt="Theme toggle" width="28" height="28">
+        </button>
+        <button class="burger" id="burger" aria-label="Меню" aria-controls="site-nav" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <h1 class="reveal">Свяжитесь с нами</h1>
+        <p class="muted reveal">Мы всегда рады новым идеям и сотрудничеству</p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="contact-grid">
+          <div class="contact-card reveal">
+            <h3>Контакты</h3>
+            <ul class="contact-list">
+              <li>
+                <i class="ri-telegram-line" style="color: var(--accent); font-size: 18px;"></i>
+                <a href="https://t.me/lair_music" target="_blank" rel="noopener">@lair_music</a>
+              </li>
+              <li>
+                <i class="ri-instagram-line" style="color: var(--accent); font-size: 18px;"></i>
+                <a href="https://www.instagram.com/lxirmusic/" target="_blank" rel="noopener">@lxirmusic</a>
+              </li>
+              <li>
+                <i class="ri-youtube-line" style="color: var(--accent); font-size: 18px;"></i>
+                <a href="https://www.youtube.com/@lairworldmusic" target="_blank" rel="noopener">Lair World Music</a>
+              </li>
+            </ul>
+            <div class="contact-note">
+              <p>Следите за нашими обновлениями в социальных сетях</p>
+            </div>
+          </div>
+
+          <div class="contact-form reveal">
+            <h3>Написать нам</h3>
+            <form id="contact-form">
+              <div class="form-row">
+                <div class="form-field">
+                  <label for="name">Имя<span class="required"> *</span></label>
+                  <input type="text" id="name" name="name" placeholder="Ваше имя" required>
+                </div>
+                <div class="form-field">
+                  <label for="contact">Telegram аккаунт<span class="required"> *</span></label>
+                  <input type="text" id="contact" name="contact" placeholder="@username" required>
+                </div>
+              </div>
+              <div class="form-field">
+                <label for="text">Сообщение<span class="required"> *</span></label>
+                <textarea id="text" name="text" rows="5" placeholder="Расскажите о вашем проекте или идее..." required></textarea>
+              </div>
+              <div class="form-actions">
+                <button type="submit" class="btn" id="submitBtn">
+                  <i class="ri-send-plane-line"></i> Отправить
+                </button>
+                <div class="form-status" id="form-status"></div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Созданы, чтобы вдохновлять и объединять</p>
+      <div class="footer-socials">
+        <a href="https://www.instagram.com/lxirmusic/" target="_blank" rel="noopener"><i class="ri-instagram-line"></i></a>
+        <a href="https://www.youtube.com/@lairworldmusic" target="_blank" rel="noopener"><i class="ri-youtube-line"></i></a>
+        <a href="https://t.me/lair_music" target="_blank" rel="noopener"><i class="ri-telegram-line"></i></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js?v=33"></script>
+  <script src="assets/js/particles.js"></script>
+  <script>
+    // Обработка формы обращений
+    document.addEventListener('DOMContentLoaded', function() {
+      const form = document.getElementById('contact-form');
+      const status = document.getElementById('form-status');
+      const submitBtn = document.getElementById('submitBtn');
+      const contactInput = document.getElementById('contact');
+      
+      // Автоматическое добавление @ если его нет
+      contactInput.addEventListener('blur', function() {
+        let value = this.value.trim();
+        if (value && !value.startsWith('@')) {
+          this.value = '@' + value;
+        }
+      });
+      
+      // Валидация Telegram username при вводе
+      contactInput.addEventListener('input', function() {
+        let value = this.value.trim();
+        // Убираем @ если пользователь вводит его вручную в начале
+        if (value.startsWith('@@')) {
+          this.value = value.substring(1);
+        }
+      });
+      
+      form.addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const formData = new FormData(form);
+        let contactValue = formData.get('contact').trim();
+        
+        // Автоматически добавляем @ если его нет
+        if (contactValue && !contactValue.startsWith('@')) {
+          contactValue = '@' + contactValue;
+        }
+        
+        const data = {
+          name: formData.get('name').trim(),
+          contact: contactValue,
+          text: formData.get('text').trim()
+        };
+        
+        // Валидация длины (HTML5 required уже проверяет заполненность)
+        if (data.name.length > 100 || data.contact.length > 100 || data.text.length > 1000) {
+          showStatus('Превышена максимальная длина полей', 'error');
+          return;
+        }
+        
+        // Отправка
+        submitBtn.disabled = true;
+        
+        try {
+          // URL Flask API бота на Render
+          const BOT_API_URL = window.BOT_API_URL || 'https://lwm-bot.onrender.com/api/appeal';
+          
+          const response = await fetch(BOT_API_URL, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data)
+          });
+          
+          const result = await response.json();
+          
+          if (response.ok && result.success) {
+            showStatus('Спасибо! Ваше обращение отправлено.', 'success');
+            form.reset();
+          } else {
+            // Обработка ошибки rate limiting (429)
+            if (response.status === 429) {
+              showStatus(result.error || 'Превышен лимит отправки', 'error');
+            } else {
+              showStatus(result.error || 'Ошибка отправки', 'error');
+            }
+          }
+        } catch (error) {
+          console.error('Ошибка:', error);
+          showStatus('Ошибка соединения с сервером. Проверьте, что бот запущен на Render.', 'error');
+        } finally {
+          submitBtn.disabled = false;
+        }
+      });
+      
+      function showStatus(message, type) {
+        status.textContent = message;
+        status.className = 'form-status';
+        if (type === 'success') {
+          status.style.color = '#10b981';
+        } else if (type === 'error') {
+          status.style.color = '#ef4444';
+        } else {
+          status.style.color = 'var(--muted)';
+        }
+      }
+    });
+  </script>
+  
+  <style>
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    /* Привязка футера к низу */
+    html, body {
+      height: 100%;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      flex: 1;
+    }
+  </style>
+</body>
+</html>
